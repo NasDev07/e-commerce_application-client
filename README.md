@@ -1,3 +1,21 @@
+## clone project e-commerce
+
+```
+git clone https://github.com/NasDev07/e-commerce_application-client.git
+```
+
+### clone project resh api laravel
+
+```
+git clone https://github.com/NasDev07/ecommerce-app-server.git
+```
+
+#### masuk ke folder project
+
+```
+cd nama folder
+```
+
 # ecommerce_application
 
 A new Flutter project.
