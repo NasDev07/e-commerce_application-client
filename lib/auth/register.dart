@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:ecommerce_application/home.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -10,6 +14,43 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmasipasswordController = TextEditingController();
+
+  Future<void> registerUser(String username, String email, String password,
+      String passwordConfirmation) async {
+    String apiUrl =
+        'http://localhost:8000/api/register'; // Ganti dengan URL REST API register Anda
+
+    // Mengirim data login ke REST API
+    http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'name': username,
+        'email': email,
+        'password': password,
+        'password_confirmation': passwordConfirmation,
+      },
+    );
+
+    // Menangani response dari REST API
+    if (response.statusCode == 200) {
+      // Jika register berhasil, Anda dapat mengatur logika navigasi ke halaman beranda atau halaman lain yang diinginkan
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else if (response.statusCode == 422) {
+      // Jika register gagal karena validasi gagal, Anda dapat menampilkan pesan error yang diberikan oleh REST API
+      String errorMessage = jsonDecode(response.body)['errors']['email'][0];
+      print('Register failed. Status code: ${response.statusCode}');
+      print('Error message: $errorMessage');
+    } else {
+      // Jika register gagal karena alasan lain, Anda dapat menampilkan pesan error umum
+      print('Register failed. Status code: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +87,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 SizedBox(height: 16.0),
                 TextField(
                   controller: _emailController,
-                  obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Confirmasi Password',
+                    labelText: 'Email',
                   ),
                 ),
                 SizedBox(height: 16.0),
@@ -69,18 +109,16 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Aksi ketika tombol register ditekan
                     String username = _usernameController.text;
                     String email = _emailController.text;
                     String password = _passwordController.text;
-                    String confirmasipassword =
+                    String passwordConfirmation =
                         _confirmasipasswordController.text;
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
+                    await registerUser(
+                        username, email, password, passwordConfirmation);
                   },
                   child: Text('Register'),
                 ),
@@ -88,20 +126,6 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
-      body: Center(
-        child: Text('Selamat! Anda berhasil registrasi'),
       ),
     );
   }

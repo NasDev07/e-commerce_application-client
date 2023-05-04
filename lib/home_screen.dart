@@ -1,5 +1,43 @@
+import 'dart:convert';
+import 'package:ecommerce_application/home.dart';
+import 'package:http/http.dart' as http;
 import 'package:ecommerce_application/auth/register.dart';
 import 'package:flutter/material.dart';
+
+Future<void> loginUser(
+    BuildContext context, String email, String password) async {
+  String apiUrl =
+      'http://localhost:8000/api/login'; // Ganti dengan URL REST API login Anda
+
+  // Mengirim data login ke REST API
+  http.Response response = await http.post(
+    Uri.parse(apiUrl),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: {
+      'email': email,
+      'password': password,
+    },
+  );
+
+  // Menangani response dari REST API
+  if (response.statusCode == 200) {
+    // Jika login berhasil, Anda dapat mengatur logika navigasi ke halaman beranda atau halaman lain yang diinginkan
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+  } else {
+    // Jika login gagal, Anda dapat menangani error sesuai dengan response dari REST API
+    print('Login failed. Status code: ${response.statusCode}');
+    dynamic data = json.decode(response.body);
+    print('Error message: ${data['message']}');
+  }
+}
+
+TextEditingController emailController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -69,14 +107,15 @@ class LestUpScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16.0),
                   Container(
-                    height: 150.0,
+                    height: 200.0,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/walpaper.jpg'),
+                        image: AssetImage('assets/apli.jpg'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
+                  SizedBox(height: 16.0),
                 ],
               ),
             ),
@@ -139,6 +178,8 @@ class NewScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
+                  controller:
+                      emailController, // Menggunakan controller emailController
                   decoration: InputDecoration(
                     labelText: 'Email',
                     prefixIcon: Icon(Icons.person),
@@ -146,20 +187,27 @@ class NewScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16.0),
                 TextField(
+                  controller:
+                      passwordController, // Menggunakan controller passwordController
                   decoration: InputDecoration(
                     labelText: 'Password',
                     prefixIcon: Icon(Icons.lock),
                   ),
                   obscureText: true,
                 ),
-                SizedBox(height: 32.0),
+                SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () {
-                    // Aksi ketika tombol login ditekan
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
+                  onPressed: () async {
+                    // Mengambil nilai email dan password dari inputan pengguna
+                    String email = emailController.text;
+                    String password = passwordController.text;
+
+                    // Memanggil fungsi loginUser untuk mengirim data login ke REST API
+                    try {
+                      await loginUser(context, email, password);
+                    } catch (error) {
+                      print('Error while logging in: $error');
+                    }
                   },
                   child: Text('Login'),
                 ),
