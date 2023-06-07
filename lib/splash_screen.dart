@@ -32,22 +32,6 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ],
         ),
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //     image: AssetImage('assets/logo.jpeg'),
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
-        // child: Center(
-        //   child: Text(
-        //     'My App',
-        //     style: TextStyle(
-        //       fontSize: 40.0,
-        //       fontWeight: FontWeight.bold,
-        //       color: Colors.white,
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }

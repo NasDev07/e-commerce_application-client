@@ -1,91 +1,123 @@
+import 'package:ecommerce_application/auth/artikel/artikel.dart';
 import 'package:ecommerce_application/home.dart';
 import 'package:ecommerce_application/me/me.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Product {
   final String name;
   final String price;
   final String image;
+  final String description;
 
-  Product({required this.name, required this.price, required this.image});
+  Product({
+    required this.name,
+    required this.price,
+    required this.image,
+    required this.description,
+  });
 }
 
 class ShopPage extends StatelessWidget {
   final List<Product> products = [
-    Product(name: "Product 1", price: "Rp. 100,000", image: "apli.jpg"),
-    Product(name: "Product 2", price: "Rp. 150,000", image: "apli.jpg"),
-    Product(name: "Product 3", price: "Rp. 200,000", image: "apli.jpg"),
-    Product(name: "Product 4", price: "Rp. 250,000", image: "apli.jpg"),
+    Product(
+      name: "GOLDEN ORGANIC",
+      price: "Rp. 100,000",
+      image: "produk1.jpg",
+      description: "Deskripsi produk Golden Organic",
+    ),
+    Product(
+      name: "OPTIFEED",
+      price: "Rp. 150,000",
+      image: "produk2.jpg",
+      description: "Deskripsi produk Optifeed",
+    ),
+    Product(
+      name: "YGO",
+      price: "Rp. 200,000",
+      image: "produk3.jpg",
+      description: "Deskripsi produk YGO",
+    ),
+    Product(
+      name: "Product 4",
+      price: "Rp. 250,000",
+      image: "apli.jpg",
+      description: "Deskripsi produk 4",
+    ),
   ];
+
+  List<Product> cartItems = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shop'),
-      ),
+          // title: Text('Shop'),
+          ),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Jumlah produk dalam satu baris
+          crossAxisCount: 2,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 10.0,
         ),
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
-          return Card(
-            child: InkWell(
-              onTap: () {
-                // Navigasi ke halaman detail produk ketika item di-tap
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailPage(product: product),
-                  ),
-                );
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(
-                        'assets/${product.image}',
-                        fit: BoxFit.cover,
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetailPage(product: product),
+                    ),
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Image.asset(
+                          'assets/${product.image}',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product.name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 20, 140, 145),
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 20, 140, 145),
+                            ),
                           ),
-                        ),
-                        Text(
-                          product.price,
-                          style:
-                              TextStyle(color: Color.fromARGB(255, 94, 89, 75)),
-                        ),
-                      ],
+                          Text(
+                            product.price,
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 94, 89, 75),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0, // Indeks halaman aktif
+        currentIndex: 1,
         onTap: (index) {
-          // Menggunakan onTap untuk menavigasi ke halaman sesuai indeks
           if (index == 0) {
             Navigator.pushReplacement(
               context,
@@ -97,61 +129,37 @@ class ShopPage extends StatelessWidget {
               MaterialPageRoute(builder: (context) => ShopPage()),
             );
           } else if (index == 2) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
-            );
+            //
           } else if (index == 3) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
+              MaterialPageRoute(builder: (context) => ArtikelMenu()),
             );
           } else if (index == 4) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
-            );
-          } else if (index == 5) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
+              MaterialPageRoute(builder: (context) => AccountPage()),
             );
           }
         },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Beranda',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_grocery_store_sharp),
-            label: 'Shop',
+            icon: Icon(Icons.store),
+            label: 'Produk',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle),
-            label: 'plus',
+            label: 'Tambah',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_agenda),
+            icon: Icon(Icons.article),
             label: 'Blog',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
@@ -175,14 +183,24 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Detail'),
+        title: Text('Detail Produk'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Image.asset(
-              'assets/${product.image}',
-              fit: BoxFit.cover,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Expanded(
+              child: Image.asset(
+                'assets/${product.image}',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Container(
+              child: Icon(Icons.local_grocery_store_sharp),
             ),
           ),
           Padding(
@@ -204,6 +222,20 @@ class ProductDetailPage extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                SizedBox(height: 16.0),
+                Text(
+                  'Keterangan Produk:',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  product.description,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
               ],
             ),
           ),
@@ -211,14 +243,24 @@ class ProductDetailPage extends StatelessWidget {
             padding: EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () {
-                // Tambahkan logika untuk menambahkan produk ke keranjang belanja
-                print('Product added to cart: ${product.name}');
+                addToCart(product, context);
               },
-              child: Text('Add to Cart'),
+              child: Text('Beli'),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void addToCart(Product product, BuildContext context) {
+    String message =
+        'Halo, saya ingin membeli produk ${product.name} dengan harga ${product.price}.';
+    String phoneNumber =
+        '082267429797'; // Ganti dengan nomor WhatsApp tujuan Anda
+    String url =
+        'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
+
+    launch(url);
   }
 }

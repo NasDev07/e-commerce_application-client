@@ -35,6 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   carousel_slider: ^4.2.1
+  url_launcher: ^6.0.9
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,13 @@ flutter:
     - walpaper.jpg
     - apli.jpg
     - logo.jpeg
+    - produk1.jpg
+    - produk2.jpg
+    - produk3.jpg
+    # - artikel1.jpg
+    # - artikel3.jpg
+    - artikel4.jpg
+    - artikel5.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,20 +1,70 @@
+import 'package:ecommerce_application/auth/artikel/artikel.dart';
 import 'package:ecommerce_application/home.dart';
 import 'package:ecommerce_application/home_screen.dart';
 import 'package:ecommerce_application/produk/produk.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class AccountPage extends StatelessWidget {
-  final String name;
-  final String email;
+class AccountPage extends StatefulWidget {
+  @override
+  _AccountPageState createState() => _AccountPageState();
+}
 
-  const AccountPage({required this.name, required this.email});
+class _AccountPageState extends State<AccountPage> {
+  String name = '';
+  String email = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    Uri apiUrl = Uri.parse('http://localhost:8000/api/me');
+
+    try {
+      final response = await http.get(
+        apiUrl,
+        headers: {'Authorization': 'Bearer santom'},
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          name = data['name'];
+          email = data['email'];
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
+  Future<void> logout() async {
+    Uri logoutUrl = Uri.parse('http://localhost:8000/api/logout');
+
+    try {
+      final response = await http.post(
+        logoutUrl,
+        headers: {'Authorization': 'Bearer santom'},
+      );
+      if (response.statusCode == 200) {
+        // Berhasil logout
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Akun Saya'),
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -31,7 +81,7 @@ class AccountPage extends StatelessWidget {
               ),
               SizedBox(height: 10.0),
               Text(
-                'Nama : Nasruddin',
+                'Nama : $name',
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -46,7 +96,7 @@ class AccountPage extends StatelessWidget {
                 ),
               ),
               Text(
-                'Email : Nasruddin@gmail.com',
+                'Email : $email',
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -69,10 +119,10 @@ class AccountPage extends StatelessWidget {
                     onTap: () {},
                     child: Column(
                       children: [
-                        Icon(Icons.food_bank, size: 40.0),
+                        Icon(Icons.topic, size: 40.0),
                         SizedBox(height: 5.0),
                         Text(
-                          'Makanan',
+                          'Organik',
                           style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.bold,
@@ -86,10 +136,10 @@ class AccountPage extends StatelessWidget {
                     onTap: () {},
                     child: Column(
                       children: [
-                        Icon(Icons.cake, size: 40.0),
+                        Icon(Icons.view_agenda, size: 40.0),
                         SizedBox(height: 5.0),
                         Text(
-                          'Kue',
+                          'Kimia',
                           style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.bold,
@@ -103,10 +153,10 @@ class AccountPage extends StatelessWidget {
                     onTap: () {},
                     child: Column(
                       children: [
-                        Icon(Icons.local_drink, size: 40.0),
+                        Icon(Icons.invert_colors, size: 40.0),
                         SizedBox(height: 5.0),
                         Text(
-                          'Minuman',
+                          'YGO',
                           style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.bold,
@@ -121,6 +171,7 @@ class AccountPage extends StatelessWidget {
               SizedBox(height: 50.0),
               ElevatedButton(
                 onPressed: () {
+                  logout();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -133,9 +184,8 @@ class AccountPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0, // Indeks halaman aktif
+        currentIndex: 4,
         onTap: (index) {
-          // Menggunakan onTap untuk menavigasi ke halaman sesuai indeks
           if (index == 0) {
             Navigator.pushReplacement(
               context,
@@ -147,61 +197,37 @@ class AccountPage extends StatelessWidget {
               MaterialPageRoute(builder: (context) => ShopPage()),
             );
           } else if (index == 2) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
-            );
+            //
           } else if (index == 3) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
+              MaterialPageRoute(builder: (context) => ArtikelMenu()),
             );
           } else if (index == 4) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
-            );
-          } else if (index == 5) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
+              MaterialPageRoute(builder: (context) => AccountPage()),
             );
           }
         },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Beranda',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_grocery_store_sharp),
-            label: 'Shop',
+            label: 'Produk',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle),
-            label: 'plus',
+            label: 'Tambah',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_agenda),
+            icon: Icon(Icons.article),
             label: 'Blog',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),

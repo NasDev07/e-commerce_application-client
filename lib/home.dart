@@ -1,14 +1,17 @@
+import 'package:ecommerce_application/auth/artikel/artikel.dart';
 import 'package:ecommerce_application/me/me.dart';
 import 'package:ecommerce_application/produk/produk.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 final List<String> images = [
-  'https://picsum.photos/seed/picsum/200/300',
-  'https://picsum.photos/200/300?grayscale',
-  'https://picsum.photos/id/237/200/300',
-  'https://picsum.photos/id/870/200/300',
-  'https://picsum.photos/200/300/?blur',
+  'https://tabloidsinartani.com/uploads/news/images/770x413/-_191208060951-320.jpg',
+  'https://insidelombok.id/wp-content/uploads/2022/05/images-2.jpeg',
+  'https://4.bp.blogspot.com/-EgRIpk6ulek/UOk0yGn6ZqI/AAAAAAAACmg/qjegveYz27A/s1600/DSC_6353_%E5%89%AF%E6%9C%AC.jpg',
+  'https://assets.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/jawapos/2019/01/petani-jagung-siap-panen-raya-darmin-diminta-pulang-kampung_m_.jpg',
+  'https://s0.smartresize.com/wallpaper/923/387/HD-wallpaper-sawah-fields-hill-padi.jpg',
+  'https://images.bisnis.com/posts/2017/06/14/662883/pandang-1.jpg',
+  'https://www.kalamanthana.id/wp-content/uploads/2016/03/tambak-ikan.gif'
 ];
 
 class HomePage extends StatelessWidget {
@@ -16,9 +19,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
-        // backgroundColor: Color.fromARGB(255, 20, 140, 145),
-      ),
+          // title: Text('Home'),
+          ),
       body: Container(
         child: Column(
           children: [
@@ -75,9 +77,9 @@ class HomePage extends StatelessWidget {
                     },
                     child: Column(
                       children: [
-                        Icon(Icons.shopping_bag, size: 30),
+                        Icon(Icons.topic, size: 30),
                         SizedBox(height: 8),
-                        Text('Belanja'),
+                        Text('Organik'),
                       ],
                     ),
                   ),
@@ -87,9 +89,9 @@ class HomePage extends StatelessWidget {
                     },
                     child: Column(
                       children: [
-                        Icon(Icons.food_bank, size: 30),
+                        Icon(Icons.view_agenda, size: 30),
                         SizedBox(height: 8),
-                        Text('Makanan'),
+                        Text('Kimia'),
                       ],
                     ),
                   ),
@@ -99,9 +101,9 @@ class HomePage extends StatelessWidget {
                     },
                     child: Column(
                       children: [
-                        Icon(Icons.car_rental, size: 30),
+                        Icon(Icons.invert_colors, size: 30),
                         SizedBox(height: 8),
-                        Text('Transportasi'),
+                        Text('YGO'),
                       ],
                     ),
                   ),
@@ -111,9 +113,9 @@ class HomePage extends StatelessWidget {
                     },
                     child: Column(
                       children: [
-                        Icon(Icons.home, size: 30),
+                        Icon(Icons.library_books, size: 30),
                         SizedBox(height: 8),
-                        Text('Rumah'),
+                        Text('OPTIFEED'),
                       ],
                     ),
                   ),
@@ -124,9 +126,8 @@ class HomePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0, // Indeks halaman aktif
+        currentIndex: 0,
         onTap: (index) {
-          // Menggunakan onTap untuk menavigasi ke halaman sesuai indeks
           if (index == 0) {
             Navigator.pushReplacement(
               context,
@@ -138,61 +139,37 @@ class HomePage extends StatelessWidget {
               MaterialPageRoute(builder: (context) => ShopPage()),
             );
           } else if (index == 2) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
-            );
+            //
           } else if (index == 3) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
+              MaterialPageRoute(builder: (context) => ArtikelMenu()),
             );
           } else if (index == 4) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
-            );
-          } else if (index == 5) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AccountPage(
-                        email: '',
-                        name: '',
-                      )),
+              MaterialPageRoute(builder: (context) => AccountPage()),
             );
           }
         },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Beranda',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_grocery_store_sharp),
-            label: 'Shop',
+            icon: Icon(Icons.store_sharp),
+            label: 'Produk',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle),
-            label: 'plus',
+            label: 'Tambah',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_agenda),
+            icon: Icon(Icons.article),
             label: 'Blog',
             backgroundColor: Color.fromARGB(255, 20, 140, 145),
           ),
